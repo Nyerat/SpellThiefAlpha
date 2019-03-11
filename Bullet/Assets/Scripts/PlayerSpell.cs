@@ -6,9 +6,15 @@ using UnityEngine;
 
 public class PlayerSpell : MonoBehaviour
 {
+    //Areas used for special spells
+    public Transform doubleshotTop;
+    public Transform doubleshotBot;
+    private bool doubleshotCounter = false;
+
+
 
     public BulletProp[] SpellCodex;
-
+    
 
     public BulletProp ThisBullet;
 
@@ -16,6 +22,8 @@ public class PlayerSpell : MonoBehaviour
     void Start()
     {
         ThisBullet = SpellCodex[0];
+
+
     }
 
     private void LateUpdate()
@@ -26,12 +34,21 @@ public class PlayerSpell : MonoBehaviour
     }
 
     // Update is called once per frame
+    // bullet specialities: doubleshot
     void Update()
     {
         if (Input.GetKey(KeyCode.Z) && Time.time > ThisBullet.nextFire)
         {
-            ThisBullet.nextFire = Time.time + ThisBullet.fireRate;
-            Instantiate(ThisBullet.bullet, ThisBullet.bulletSpawn.position, ThisBullet.bulletSpawn.rotation);
+            if (ThisBullet.special != "")
+            {
+                SpecialBullet();
+            }
+            else
+            {
+                ThisBullet.nextFire = Time.time + ThisBullet.fireRate;
+                Instantiate(ThisBullet.bullet, ThisBullet.bulletSpawn.position, ThisBullet.bulletSpawn.rotation);
+            }
+
         }
     }
 
@@ -40,5 +57,24 @@ public class PlayerSpell : MonoBehaviour
     void ChangeBullet()
     {
 
+    }
+
+    void SpecialBullet()
+    {
+        Debug.Log("test");
+        switch (ThisBullet.special)
+        {
+            case "doubleshot":
+            ThisBullet.nextFire = Time.time + ThisBullet.fireRate;
+                if (doubleshotCounter == false)
+                { Instantiate(ThisBullet.bullet, doubleshotTop.position, doubleshotTop.rotation);
+                    doubleshotCounter = true;
+                }
+                else
+                { Instantiate(ThisBullet.bullet, doubleshotBot.position, doubleshotBot.rotation);
+                    doubleshotCounter = false;
+                }
+                break;
+        }
     }
 }
