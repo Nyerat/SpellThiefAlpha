@@ -10,7 +10,7 @@ public class EnemyShooter : MonoBehaviour
 
 
     public EnemyBulletProp EnemyBullet;
-
+    public string spell;
 
 
     // Activates before the first frame

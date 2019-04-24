@@ -44,12 +44,12 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            //Grazing
+            //Grazing speed
             PlayerStats.Speed = GrazeSpeed;
         }
         else
         {
-            //Normal
+            //Normal speed
             PlayerStats.Speed = Speed;
         }
     }

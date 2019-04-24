@@ -13,17 +13,35 @@ public class PlayerSpell : MonoBehaviour
 
 
 
-    public BulletProp[] SpellCodex;
+    public List<BulletProp> SpellCodex;
     
 
-    public BulletProp ThisBullet;
+    public BulletProp StandardBullet;
+    public BulletProp SpellBullet;
 
     // Start is called before the first frame update
     void Start()
     {
-        ThisBullet = SpellCodex[0];
+        StandardBullet = SpellCodex[0];
+        SpellBullet = SpellCodex[1];
 
+    }
 
+    //Use this method in the future for finding a new bullet from the array and making it 1
+    public void ChangeBullet(string spellStolen)
+    {
+        foreach (BulletProp spell in SpellCodex)
+        {
+            if (spell.spellName == spellStolen)
+            {
+                SpellCodex.Remove(spell);
+                SpellCodex.Insert(1, spell);
+            }
+            else
+            {
+
+            }
+        }
     }
 
     private void LateUpdate()
@@ -37,41 +55,48 @@ public class PlayerSpell : MonoBehaviour
     // bullet specialities: doubleshot
     void Update()
     {
-        if (Input.GetKey(KeyCode.Z) && Time.time > ThisBullet.nextFire)
+        if (Input.GetKey(KeyCode.Z) && Time.time > StandardBullet.nextFire)
         {
-            if (ThisBullet.special != "")
+
+
+            StandardBullet.nextFire = Time.time + StandardBullet.fireRate;
+            Instantiate(StandardBullet.bullet, StandardBullet.bulletSpawn.position, StandardBullet.bulletSpawn.rotation);
+                
+            
+            
+        }
+        else if (Input.GetKey(KeyCode.C) && Time.time > SpellBullet.nextFire)
+        {
+            if (SpellBullet.special != "")
             {
                 SpecialBullet();
             }
             else
             {
-                ThisBullet.nextFire = Time.time + ThisBullet.fireRate;
-                Instantiate(ThisBullet.bullet, ThisBullet.bulletSpawn.position, ThisBullet.bulletSpawn.rotation);
+                SpellBullet.nextFire = Time.time + SpellBullet.fireRate;
+                Instantiate(SpellBullet.bullet, SpellBullet.bulletSpawn.position, SpellBullet.bulletSpawn.rotation);
+
             }
 
         }
     }
 
 
-    //Use this method in the future for finding a new bullet from the array and making it 0
-    void ChangeBullet()
-    {
-
-    }
+    
 
     void SpecialBullet()
     {
-        Debug.Log("test");
-        switch (ThisBullet.special)
+        switch (SpellBullet.special)
         {
+            //Shoots a bullet from the head then the feet
             case "doubleshot":
-            ThisBullet.nextFire = Time.time + ThisBullet.fireRate;
+                SpellBullet.nextFire = Time.time + SpellBullet.fireRate;
                 if (doubleshotCounter == false)
-                { Instantiate(ThisBullet.bullet, doubleshotTop.position, doubleshotTop.rotation);
+                { Instantiate(SpellBullet.bullet, doubleshotTop.position, doubleshotTop.rotation);
                     doubleshotCounter = true;
                 }
                 else
-                { Instantiate(ThisBullet.bullet, doubleshotBot.position, doubleshotBot.rotation);
+                { Instantiate(SpellBullet.bullet, doubleshotBot.position, doubleshotBot.rotation);
                     doubleshotCounter = false;
                 }
                 break;

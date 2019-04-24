@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class BulletProp
 {
+    public string spellName;
     public GameObject bullet;
     public float bulletSpeed = 5;
     public float fireRate;

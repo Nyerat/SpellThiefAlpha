@@ -29,7 +29,7 @@ public class PlayerHurt : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Walls") || other.CompareTag("StealerObject") || other.CompareTag("StealerObject"))
+        if (other.CompareTag("Walls") || other.CompareTag("StealerObject") || other.CompareTag("PlayerSpell"))
         {
             return;
         }
